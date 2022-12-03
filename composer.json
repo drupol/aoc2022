@@ -1,0 +1,8 @@
+{
+    "require": {
+        "loophp/collection": "dev-master"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^6.2"
+    }
+}
