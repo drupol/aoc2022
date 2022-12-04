@@ -10,7 +10,12 @@ include __DIR__ . '/vendor/autoload.php';
 
 $input = trim(file_get_contents(__DIR__ . '/input.txt'));
 
-$priorities = array_flip(['null', ...range('a', 'z'), ...range('A', 'Z')]);
+$priorities = static function (string $c): int
+{
+	$ord = ord($c);
+
+    return ($ord & 0x1F) + ((($ord & 0x20) - 1) >> 0xF & 0x1a);
+};
 
 $c = Collection::fromString($input, "\n")
     ->map(static fn (string $line): array => str_split($line))
@@ -31,7 +36,7 @@ $c = Collection::fromString($input, "\n")
         }
     )
     ->map(
-        static fn (string $letter): int => $priorities[$letter]
+        static fn (string $letter): int => $priorities($letter)
     )
     ->reduce(
         static fn (int $c, int $i): int => $c + $i,
